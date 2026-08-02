@@ -1,0 +1,41 @@
+{
+  "name": "@legacy-wolf/api",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "build": "tsc",
+    "dev": "nest start --watch",
+    "lint": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@aws-sdk/client-s3": "^3.1084.0",
+    "@legacy-wolf/core": "workspace:*",
+    "@nestjs/common": "^11.1.0",
+    "@nestjs/config": "^4.0.2",
+    "@nestjs/core": "^11.1.0",
+    "@nestjs/platform-express": "^11.1.0",
+    "@nestjs/swagger": "^11.2.0",
+    "@nestjs/throttler": "^6.4.0",
+    "@prisma/client": "^6.16.0",
+    "bullmq": "^5.58.0",
+    "helmet": "^8.1.0",
+    "ioredis": "^5.7.0",
+    "jose": "^6.1.0",
+    "reflect-metadata": "^0.2.2",
+    "rxjs": "^7.8.2",
+    "stripe": "^22.3.1",
+    "twilio": "^5.9.0",
+    "zod": "^3.25.0"
+  },
+  "devDependencies": {
+    "@legacy-wolf/config": "workspace:*",
+    "@nestjs/cli": "^11.0.0",
+    "@types/supertest": "^6.0.3",
+    "prisma": "^6.16.0",
+    "supertest": "^7.1.1",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.1"
+  }
+}

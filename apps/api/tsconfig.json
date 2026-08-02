@@ -1,0 +1,5 @@
+{
+  "extends": "@legacy-wolf/config/tsconfig/base",
+  "compilerOptions": { "experimentalDecorators": true, "emitDecoratorMetadata": true, "outDir": "dist", "noEmit": false, "module": "CommonJS", "moduleResolution": "Node" },
+  "include": ["src/**/*.ts"]
+}

@@ -1,0 +1,16 @@
+{
+  "extends": "@legacy-wolf/config/tsconfig/react-native",
+  "compilerOptions": {
+    "allowJs": true,
+    "types": [
+      "nativewind/types"
+    ]
+  },
+  "include": [
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    "nativewind-env.d.ts"
+  ]
+}

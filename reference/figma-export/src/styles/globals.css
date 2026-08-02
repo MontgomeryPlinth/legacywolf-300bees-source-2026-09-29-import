@@ -1,0 +1,70 @@
+/* Legacy Wolf Toast Notifications - Custom Styling */
+
+/* Make toasts more prominent and brand-aligned */
+[data-sonner-toaster] {
+  --width: min(600px, 90vw);
+}
+
+[data-sonner-toast] {
+  backdrop-filter: blur(12px);
+  animation: slideInFromTop 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes slideInFromTop {
+  from {
+    transform: translateY(-100%);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+[data-sonner-toast][data-styled] {
+  padding: 1.5rem !important;
+  min-height: 120px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.5rem;
+}
+
+/* Enhanced icon size for success/error toasts */
+[data-sonner-toast] [data-icon] {
+  width: 28px !important;
+  height: 28px !important;
+}
+
+/* Success toast accent */
+[data-sonner-toast][data-type="success"] {
+  border-left: 6px solid hsl(var(--primary)) !important;
+}
+
+/* Error toast accent */
+[data-sonner-toast][data-type="error"] {
+  border-left: 6px solid hsl(var(--destructive)) !important;
+}
+
+/* Warning toast accent */
+[data-sonner-toast][data-type="warning"] {
+  border-left: 6px solid hsl(45 93% 47%) !important;
+}
+
+/* Info toast accent */
+[data-sonner-toast][data-type="info"] {
+  border-left: 6px solid hsl(221 83% 53%) !important;
+}
+
+/* Enhanced shadow for premium feel */
+[data-sonner-toast] {
+  box-shadow: 
+    0 20px 25px -5px rgba(0, 0, 0, 0.5),
+    0 10px 10px -5px rgba(0, 0, 0, 0.3),
+    0 0 0 1px rgba(181, 196, 44, 0.2);
+}
+
+/* Loading spinner color */
+[data-sonner-toast] [data-loading-icon] {
+  color: hsl(var(--primary));
+}

@@ -1,0 +1,153 @@
+[
+  {
+    "id": "ACT-001",
+    "timestamp": "2026-05-23T14:50:00.000Z",
+    "type": "incident-triggered",
+    "description": "James Mitchell arrived on scene at INC-2026-001",
+    "userId": "LW-US-2234",
+    "incidentId": "INC-2026-001",
+    "responderId": "RESP-045"
+  },
+  {
+    "id": "ACT-002",
+    "timestamp": "2026-05-23T14:37:00.000Z",
+    "type": "responder-dispatched",
+    "description": "James Mitchell dispatched to incident INC-2026-001",
+    "incidentId": "INC-2026-001",
+    "responderId": "RESP-045"
+  },
+  {
+    "id": "ACT-003",
+    "timestamp": "2026-05-23T14:30:00.000Z",
+    "type": "incident-triggered",
+    "description": "Motion timer expired for Emma Roberts",
+    "userId": "LW-US-2234",
+    "incidentId": "INC-2026-001"
+  },
+  {
+    "id": "ACT-004",
+    "timestamp": "2026-05-23T13:00:00.000Z",
+    "type": "incident-resolved",
+    "description": "Incident INC-2026-002 resolved as false alarm",
+    "incidentId": "INC-2026-002"
+  },
+  {
+    "id": "ACT-005",
+    "timestamp": "2026-05-23T12:05:00.000Z",
+    "type": "responder-dispatched",
+    "description": "Sarah Chen dispatched to incident INC-2026-002",
+    "incidentId": "INC-2026-002",
+    "responderId": "RESP-023"
+  },
+  {
+    "id": "ACT-006",
+    "timestamp": "2026-05-23T12:00:00.000Z",
+    "type": "incident-triggered",
+    "description": "Motion timer expired for Tom Harris",
+    "userId": "LW-US-5893",
+    "incidentId": "INC-2026-002"
+  },
+  {
+    "id": "ACT-007",
+    "timestamp": "2026-05-23T11:30:00.000Z",
+    "type": "user-joined",
+    "description": "New user Peter Thompson joined with Full Protection plan",
+    "userId": "LW-US-9876"
+  },
+  {
+    "id": "ACT-008",
+    "timestamp": "2026-05-23T10:15:00.000Z",
+    "type": "plan-upgraded",
+    "description": "User Alice Walker upgraded to Pet Guardian tier",
+    "userId": "LW-US-4523"
+  },
+  {
+    "id": "ACT-009",
+    "timestamp": "2026-05-23T09:45:00.000Z",
+    "type": "check-in-missed",
+    "description": "User Sophie Martinez missed scheduled check-in - grace period active",
+    "userId": "LW-US-3456"
+  },
+  {
+    "id": "ACT-010",
+    "timestamp": "2026-05-23T09:15:00.000Z",
+    "type": "incident-resolved",
+    "description": "Incident INC-2026-003 resolved - user traveling, Trip Mode activated",
+    "incidentId": "INC-2026-003"
+  },
+  {
+    "id": "ACT-011",
+    "timestamp": "2026-05-23T08:35:00.000Z",
+    "type": "responder-dispatched",
+    "description": "Marcus Wong dispatched to incident INC-2026-003",
+    "incidentId": "INC-2026-003",
+    "responderId": "RESP-067"
+  },
+  {
+    "id": "ACT-012",
+    "timestamp": "2026-05-23T08:30:00.000Z",
+    "type": "incident-triggered",
+    "description": "Motion timer expired for Sophie Martinez",
+    "userId": "LW-US-3456",
+    "incidentId": "INC-2026-003"
+  },
+  {
+    "id": "ACT-013",
+    "timestamp": "2026-05-23T07:20:00.000Z",
+    "type": "user-joined",
+    "description": "New user Jennifer Smith joined with Attend & Check plan",
+    "userId": "LW-US-8765"
+  },
+  {
+    "id": "ACT-014",
+    "timestamp": "2026-05-22T18:45:00.000Z",
+    "type": "incident-resolved",
+    "description": "Incident INC-2026-004 marked as false alarm",
+    "incidentId": "INC-2026-004"
+  },
+  {
+    "id": "ACT-015",
+    "timestamp": "2026-05-22T18:06:00.000Z",
+    "type": "responder-dispatched",
+    "description": "Lisa Anderson dispatched to incident INC-2026-004",
+    "incidentId": "INC-2026-004",
+    "responderId": "RESP-012"
+  },
+  {
+    "id": "ACT-016",
+    "timestamp": "2026-05-22T18:00:00.000Z",
+    "type": "incident-triggered",
+    "description": "Motion timer expired for Alex Morgan",
+    "userId": "LW-US-8472",
+    "incidentId": "INC-2026-004"
+  },
+  {
+    "id": "ACT-017",
+    "timestamp": "2026-05-22T16:30:00.000Z",
+    "type": "plan-upgraded",
+    "description": "User Michael Brown upgraded to Full Protection tier",
+    "userId": "LW-US-7654"
+  },
+  {
+    "id": "ACT-018",
+    "timestamp": "2026-05-22T15:10:00.000Z",
+    "type": "user-joined",
+    "description": "New user Kevin Davis joined with Friend Alert plan",
+    "userId": "LW-US-6543"
+  },
+  {
+    "id": "ACT-019",
+    "timestamp": "2026-05-22T01:30:00.000Z",
+    "type": "incident-resolved",
+    "description": "Incident INC-2026-005 resolved - medical emergency, user hospitalized",
+    "incidentId": "INC-2026-005"
+  },
+  {
+    "id": "ACT-020",
+    "timestamp": "2026-05-21T22:40:00.000Z",
+    "type": "responder-dispatched",
+    "description": "James Mitchell dispatched to incident INC-2026-005",
+    "incidentId": "INC-2026-005",
+    "responderId": "RESP-045"
+  }
+]

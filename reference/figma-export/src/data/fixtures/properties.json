@@ -1,0 +1,114 @@
+[
+  {
+    "userId": "LW-US-8472",
+    "address": "42 Melbourne Street",
+    "unit": "Apartment 7B",
+    "city": "North Sydney",
+    "state": "NSW",
+    "postcode": "2060",
+    "propertyType": "Apartment Building",
+    "buildingAccess": {
+      "intercom": "Press 7B, speak to concierge",
+      "concierge": "24/7 available",
+      "afterHoursCode": "#2840*"
+    },
+    "unitAccess": {
+      "keysafeLocation": "Inside fire hose cabinet, Level 7",
+      "keysafeCode": "5729",
+      "doorType": "Push to open, auto-lock"
+    },
+    "alarm": {
+      "system": "ADT SafeWatch",
+      "code": "2847#",
+      "panelLocation": "Inside entrance, left wall"
+    }
+  },
+  {
+    "userId": "LW-US-2234",
+    "address": "78 Harris Street",
+    "unit": "Unit 12",
+    "city": "Pyrmont",
+    "state": "NSW",
+    "postcode": "2009",
+    "propertyType": "Apartment Building",
+    "buildingAccess": {
+      "intercom": "Unit 12 on directory",
+      "concierge": "Mon-Fri 8am-6pm only",
+      "afterHoursCode": "C4582"
+    },
+    "unitAccess": {
+      "keysafeLocation": "Under front doormat",
+      "keysafeCode": "8264",
+      "doorType": "Standard key lock"
+    },
+    "alarm": {
+      "system": "SimpliSafe",
+      "code": "1234",
+      "panelLocation": "Kitchen wall near fridge"
+    }
+  },
+  {
+    "userId": "LW-US-5893",
+    "address": "12 Elizabeth Bay Road",
+    "unit": "",
+    "city": "Elizabeth Bay",
+    "state": "NSW",
+    "postcode": "2011",
+    "propertyType": "House",
+    "buildingAccess": {},
+    "unitAccess": {
+      "keysafeLocation": "Next to side gate, covered by plant pot",
+      "keysafeCode": "9527",
+      "doorType": "Deadbolt - requires key"
+    },
+    "alarm": {
+      "system": "Nest Secure",
+      "code": "7531",
+      "panelLocation": "Hallway near front door"
+    }
+  },
+  {
+    "userId": "LW-US-3456",
+    "address": "88 Cumberland Street",
+    "unit": "Level 15, Unit 1504",
+    "city": "The Rocks",
+    "state": "NSW",
+    "postcode": "2000",
+    "propertyType": "Apartment Building",
+    "buildingAccess": {
+      "intercom": "1504 on touchscreen directory",
+      "concierge": "24/7 front desk",
+      "afterHoursCode": "Use fob reader - backup code *9876#"
+    },
+    "unitAccess": {
+      "keysafeLocation": "With building concierge desk",
+      "keysafeCode": "N/A - pickup from desk",
+      "doorType": "Electronic lock"
+    },
+    "alarm": {
+      "system": "ADT Command",
+      "code": "3698",
+      "panelLocation": "Wall panel near entrance"
+    }
+  },
+  {
+    "userId": "LW-US-7821",
+    "address": "234 Victoria Road",
+    "unit": "",
+    "city": "Gladesville",
+    "state": "NSW",
+    "postcode": "2111",
+    "propertyType": "House",
+    "buildingAccess": {},
+    "unitAccess": {
+      "keysafeLocation": "Attached to gas meter at side of house",
+      "keysafeCode": "4829",
+      "doorType": "Standard deadbolt"
+    },
+    "alarm": {
+      "system": "None",
+      "code": "",
+      "panelLocation": ""
+    }
+  }
+]

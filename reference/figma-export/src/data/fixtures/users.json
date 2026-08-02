@@ -1,0 +1,92 @@
+[
+  {
+    "id": "LW-US-8472",
+    "name": "Alex Morgan",
+    "email": "alex.morgan@email.com",
+    "phone": "+61 412 345 678",
+    "joinedDate": "Nov 2025",
+    "plan": {
+      "tier": "full",
+      "activeServices": ["attend-check", "pet-guardian", "reputation-guard"],
+      "status": "protected"
+    },
+    "motionTimer": {
+      "intervalHours": 16,
+      "nextCheckIn": "2026-05-24T08:30:00.000Z",
+      "lastCheckIn": "2026-05-23T15:30:00.000Z",
+      "status": "active"
+    }
+  },
+  {
+    "id": "LW-US-2234",
+    "name": "Emma Roberts",
+    "email": "emma.roberts@email.com",
+    "phone": "+61 423 456 789",
+    "joinedDate": "Sep 2025",
+    "plan": {
+      "tier": "pet-guardian",
+      "activeServices": ["attend-check", "pet-guardian"],
+      "status": "protected"
+    },
+    "motionTimer": {
+      "intervalHours": 16,
+      "nextCheckIn": "2026-05-24T07:00:00.000Z",
+      "lastCheckIn": "2026-05-23T14:00:00.000Z",
+      "status": "triggered"
+    }
+  },
+  {
+    "id": "LW-US-5893",
+    "name": "Tom Harris",
+    "email": "tom.harris@email.com",
+    "phone": "+61 434 567 890",
+    "joinedDate": "Dec 2025",
+    "plan": {
+      "tier": "attend-check",
+      "activeServices": ["attend-check"],
+      "status": "protected"
+    },
+    "motionTimer": {
+      "intervalHours": 16,
+      "nextCheckIn": "2026-05-24T09:00:00.000Z",
+      "lastCheckIn": "2026-05-23T16:00:00.000Z",
+      "status": "active"
+    }
+  },
+  {
+    "id": "LW-US-3456",
+    "name": "Sophie Martinez",
+    "email": "sophie.m@email.com",
+    "phone": "+61 445 678 901",
+    "joinedDate": "Oct 2025",
+    "plan": {
+      "tier": "full",
+      "activeServices": ["attend-check", "pet-guardian", "reputation-guard"],
+      "status": "paused"
+    },
+    "motionTimer": {
+      "intervalHours": 16,
+      "nextCheckIn": "2026-05-24T10:00:00.000Z",
+      "lastCheckIn": "2026-05-23T17:00:00.000Z",
+      "status": "active"
+    }
+  },
+  {
+    "id": "LW-US-7821",
+    "name": "James Wilson",
+    "email": "james.w@email.com",
+    "phone": "+61 456 789 012",
+    "joinedDate": "Aug 2025",
+    "plan": {
+      "tier": "friend-alert",
+      "activeServices": ["friend-alert"],
+      "status": "protected"
+    },
+    "motionTimer": {
+      "intervalHours": 24,
+      "nextCheckIn": "2026-05-24T15:00:00.000Z",
+      "lastCheckIn": "2026-05-23T15:00:00.000Z",
+      "status": "active"
+    }
+  }
+]

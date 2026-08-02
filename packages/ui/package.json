@@ -1,0 +1,28 @@
+{
+  "name": "@legacy-wolf/ui",
+  "version": "0.0.0",
+  "private": true,
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "build": "tsc",
+    "lint": "tsc --noEmit",
+    "test": "vitest run --passWithNoTests",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@legacy-wolf/tokens": "workspace:*",
+    "react": "19.2.3",
+    "react-native": "0.86.0"
+  },
+  "devDependencies": {
+    "@legacy-wolf/config": "workspace:*",
+    "@types/react": "~19.2.0",
+    "typescript": "^5.8.3",
+    "vitest": "^3.1.1"
+  },
+  "peerDependencies": {
+    "react": "19.2.3",
+    "react-native": "0.86.0"
+  }
+}

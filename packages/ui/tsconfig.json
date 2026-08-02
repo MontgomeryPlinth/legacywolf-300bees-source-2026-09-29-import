@@ -1,0 +1,4 @@
+{
+  "extends": "@legacy-wolf/config/tsconfig/react-native",
+  "include": ["src/**/*.ts", "src/**/*.tsx"]
+}

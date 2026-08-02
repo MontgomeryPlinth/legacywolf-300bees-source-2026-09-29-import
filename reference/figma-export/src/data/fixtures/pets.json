@@ -1,0 +1,89 @@
+[
+  {
+    "id": "PET-001",
+    "userId": "LW-US-8472",
+    "name": "Daisy",
+    "species": "Dog",
+    "breed": "Golden Retriever",
+    "age": 6,
+    "sex": "Female",
+    "weight": 28,
+    "microchip": "985112******234",
+    "vetName": "North Sydney Veterinary Hospital",
+    "vetPhone": "+61 2 9955 3486",
+    "conditions": ["Hip dysplasia"],
+    "medications": ["Carprofen 50mg - one tablet with evening meal"],
+    "routine": {
+      "morning": "7:00 AM - Breakfast (1.5 cups dry food) + 30min walk in park",
+      "evening": "6:00 PM - Dinner (1.5 cups + medication) + 20min walk"
+    },
+    "preferences": "Daisy responds to 'good girl' and her favorite toy is the blue rope. She's anxious around loud noises — speak calmly and move slowly. Sleeps on her bed in living room, left corner.",
+    "guardianId": "CONT-001",
+    "backupGuardianId": "CONT-002"
+  },
+  {
+    "id": "PET-002",
+    "userId": "LW-US-2234",
+    "name": "Whiskers",
+    "species": "Cat",
+    "breed": "British Shorthair",
+    "age": 4,
+    "sex": "Male",
+    "weight": 6,
+    "microchip": "985112******567",
+    "vetName": "Pyrmont Veterinary Clinic",
+    "vetPhone": "+61 2 9660 2345",
+    "conditions": [],
+    "medications": [],
+    "routine": {
+      "morning": "8:00 AM - Wet food (1 pouch) + fresh water",
+      "evening": "6:00 PM - Wet food (1 pouch) + treats"
+    },
+    "preferences": "Whiskers is indoor-only. Hides under bed when scared. Litter box in bathroom. Loves chin scratches.",
+    "guardianId": "CONT-005",
+    "backupGuardianId": "CONT-006"
+  },
+  {
+    "id": "PET-003",
+    "userId": "LW-US-3456",
+    "name": "Luna",
+    "species": "Dog",
+    "breed": "French Bulldog",
+    "age": 3,
+    "sex": "Female",
+    "weight": 11,
+    "microchip": "985112******890",
+    "vetName": "Sydney Pet Hospital",
+    "vetPhone": "+61 2 9188 7474",
+    "conditions": ["Brachycephalic syndrome - sensitive to heat"],
+    "medications": [],
+    "routine": {
+      "morning": "7:30 AM - Breakfast (1 cup dry food) + short walk (10min)",
+      "evening": "6:30 PM - Dinner (1 cup dry food) + short walk (10min)"
+    },
+    "preferences": "Luna can't handle heat or strenuous exercise. Keep indoors during hot days. She snores loudly when sleeping.",
+    "guardianId": "CONT-007"
+  },
+  {
+    "id": "PET-004",
+    "userId": "LW-US-8472",
+    "name": "Milo",
+    "species": "Cat",
+    "breed": "Domestic Shorthair",
+    "age": 2,
+    "sex": "Male",
+    "weight": 5,
+    "microchip": "985112******123",
+    "vetName": "North Sydney Veterinary Hospital",
+    "vetPhone": "+61 2 9955 3486",
+    "conditions": [],
+    "medications": [],
+    "routine": {
+      "morning": "7:00 AM - Dry food (1/2 cup) + water refill",
+      "evening": "6:00 PM - Wet food (1 pouch) + playtime with feather toy"
+    },
+    "preferences": "Milo is very playful and gets along with Daisy. Loves to climb - has a cat tree in bedroom.",
+    "guardianId": "CONT-001",
+    "backupGuardianId": "CONT-002"
+  }
+]

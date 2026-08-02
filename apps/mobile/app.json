@@ -1,0 +1,64 @@
+{
+  "expo": {
+    "name": "Legacy Wolf",
+    "slug": "legacy-wolf",
+    "scheme": "legacywolf",
+    "version": "0.1.0",
+    "icon": "./assets/icon-provisional.png",
+    "orientation": "portrait",
+    "userInterfaceStyle": "dark",
+    "plugins": [
+      "expo-router",
+      "expo-secure-store",
+      ["expo-local-authentication", {
+        "faceIDPermission": "Legacy Wolf uses Face ID only to unlock your stored session on this device."
+      }],
+      "expo-background-task"
+      ,"./plugins/with-legacy-wolf-foreground-service"
+      ,"expo-notifications"
+      ,["expo-location", {
+        "locationAlwaysAndWhenInUsePermission": "Legacy Wolf uses occasional location changes only as an auxiliary wake signal for Motion Timer protection. Your location is not stored in your plan.",
+        "locationWhenInUsePermission": "Legacy Wolf uses occasional location changes only as an auxiliary wake signal for Motion Timer protection.",
+        "isIosBackgroundLocationEnabled": true,
+        "isAndroidBackgroundLocationEnabled": true,
+        "isAndroidForegroundServiceEnabled": true
+      }]
+    ],
+    "splash": {
+      "image": "./assets/icon-provisional.png",
+      "resizeMode": "contain",
+      "backgroundColor": "#0A0A0A"
+    },
+    "ios": {
+      "supportsTablet": true,
+      "bundleIdentifier": "com.legacywolf.app",
+      "infoPlist": {
+        "NSFaceIDUsageDescription": "Legacy Wolf uses Face ID only to unlock a stored session on this device.",
+        "NSMotionUsageDescription": "Legacy Wolf uses device motion as a liveness signal for the Motion Timer."
+      },
+      "privacyManifests": {
+        "NSPrivacyTracking": false,
+        "NSPrivacyTrackingDomains": [],
+        "NSPrivacyCollectedDataTypes": []
+      }
+    },
+    "android": {
+      "package": "com.legacywolf.app",
+      "adaptiveIcon": {
+        "foregroundImage": "./assets/icon-provisional.png",
+        "backgroundColor": "#0A0A0A"
+      },
+      "permissions": [
+        "ACTIVITY_RECOGNITION",
+        "RECEIVE_BOOT_COMPLETED",
+        "FOREGROUND_SERVICE",
+        "FOREGROUND_SERVICE_HEALTH"
+      ]
+    },
+    "web": {
+      "bundler": "metro",
+      "output": "single",
+      "favicon": "./assets/icon-provisional.png"
+    }
+  }
+}

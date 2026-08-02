@@ -1,0 +1,242 @@
+[
+  {
+    "id": "INC-2026-001",
+    "userId": "LW-US-2234",
+    "userName": "Emma Roberts",
+    "userAddress": "78 Harris Street, Unit 12, Pyrmont NSW 2009",
+    "status": "on-scene",
+    "priority": "high",
+    "triggeredAt": "2026-05-23T14:30:00.000Z",
+    "dispatchedAt": "2026-05-23T14:37:00.000Z",
+    "resolvedAt": null,
+    "responderId": "RESP-045",
+    "responderName": "James Mitchell",
+    "services": ["attend-check", "pet-guardian"],
+    "notes": "User has not responded to check-in. Pet (cat) present. Building concierge confirmed no recent sighting.",
+    "timeline": [
+      {
+        "timestamp": "2026-05-23T14:30:00.000Z",
+        "event": "Motion timer expired - no check-in received",
+        "actor": "System"
+      },
+      {
+        "timestamp": "2026-05-23T14:32:00.000Z",
+        "event": "Automated phone call - no answer",
+        "actor": "System"
+      },
+      {
+        "timestamp": "2026-05-23T14:34:00.000Z",
+        "event": "SMS sent to user - no response",
+        "actor": "System"
+      },
+      {
+        "timestamp": "2026-05-23T14:37:00.000Z",
+        "event": "Responder James Mitchell dispatched",
+        "actor": "Admin"
+      },
+      {
+        "timestamp": "2026-05-23T14:42:00.000Z",
+        "event": "Responder en route - ETA 8 minutes",
+        "actor": "James Mitchell"
+      },
+      {
+        "timestamp": "2026-05-23T14:50:00.000Z",
+        "event": "Responder arrived on scene - accessing property",
+        "actor": "James Mitchell"
+      },
+      {
+        "timestamp": "2026-05-23T14:55:00.000Z",
+        "event": "Property secured, pet located and safe",
+        "actor": "James Mitchell"
+      }
+    ]
+  },
+  {
+    "id": "INC-2026-002",
+    "userId": "LW-US-5893",
+    "userName": "Tom Harris",
+    "userAddress": "12 Elizabeth Bay Road, Elizabeth Bay NSW 2011",
+    "status": "resolved",
+    "priority": "medium",
+    "triggeredAt": "2026-05-23T12:00:00.000Z",
+    "dispatchedAt": "2026-05-23T12:05:00.000Z",
+    "resolvedAt": "2026-05-23T13:00:00.000Z",
+    "responderId": "RESP-023",
+    "responderName": "Sarah Chen",
+    "services": ["attend-check"],
+    "notes": "False alarm - user was at gym and phone died. User contacted and confirmed safe.",
+    "timeline": [
+      {
+        "timestamp": "2026-05-23T12:00:00.000Z",
+        "event": "Motion timer expired",
+        "actor": "System"
+      },
+      {
+        "timestamp": "2026-05-23T12:05:00.000Z",
+        "event": "Responder Sarah Chen dispatched",
+        "actor": "Admin"
+      },
+      {
+        "timestamp": "2026-05-23T12:20:00.000Z",
+        "event": "Contacted nominated contact - user located at local gym",
+        "actor": "Sarah Chen"
+      },
+      {
+        "timestamp": "2026-05-23T12:48:00.000Z",
+        "event": "User contacted and confirmed safe",
+        "actor": "Sarah Chen"
+      },
+      {
+        "timestamp": "2026-05-23T13:00:00.000Z",
+        "event": "Incident resolved as false alarm",
+        "actor": "Sarah Chen"
+      }
+    ]
+  },
+  {
+    "id": "INC-2026-003",
+    "userId": "LW-US-3456",
+    "userName": "Sophie Martinez",
+    "userAddress": "88 Cumberland Street, Level 15 Unit 1504, The Rocks NSW 2000",
+    "status": "resolved",
+    "priority": "low",
+    "triggeredAt": "2026-05-23T08:30:00.000Z",
+    "dispatchedAt": "2026-05-23T08:35:00.000Z",
+    "resolvedAt": "2026-05-23T09:15:00.000Z",
+    "responderId": "RESP-067",
+    "responderName": "Marcus Wong",
+    "services": ["attend-check", "pet-guardian"],
+    "notes": "User traveling internationally, forgot to activate Trip Mode. Contacted via hotel and confirmed safe.",
+    "timeline": [
+      {
+        "timestamp": "2026-05-23T08:30:00.000Z",
+        "event": "Motion timer expired",
+        "actor": "System"
+      },
+      {
+        "timestamp": "2026-05-23T08:35:00.000Z",
+        "event": "Responder Marcus Wong dispatched",
+        "actor": "Admin"
+      },
+      {
+        "timestamp": "2026-05-23T08:45:00.000Z",
+        "event": "Contacted nominated contact - user traveling in Singapore",
+        "actor": "Marcus Wong"
+      },
+      {
+        "timestamp": "2026-05-23T09:00:00.000Z",
+        "event": "User reached at hotel - confirmed safe, forgot to enable Trip Mode",
+        "actor": "Marcus Wong"
+      },
+      {
+        "timestamp": "2026-05-23T09:15:00.000Z",
+        "event": "Incident resolved - Trip Mode activated for user",
+        "actor": "Marcus Wong"
+      }
+    ]
+  },
+  {
+    "id": "INC-2026-004",
+    "userId": "LW-US-8472",
+    "userName": "Alex Morgan",
+    "userAddress": "42 Melbourne Street, Apartment 7B, North Sydney NSW 2060",
+    "status": "false-alarm",
+    "priority": "high",
+    "triggeredAt": "2026-05-22T18:00:00.000Z",
+    "dispatchedAt": "2026-05-22T18:06:00.000Z",
+    "resolvedAt": "2026-05-22T18:45:00.000Z",
+    "responderId": "RESP-012",
+    "responderName": "Lisa Anderson",
+    "services": ["attend-check", "pet-guardian", "reputation-guard"],
+    "notes": "User fell asleep after work and missed check-in. Woke to responder knock. All systems normal.",
+    "timeline": [
+      {
+        "timestamp": "2026-05-22T18:00:00.000Z",
+        "event": "Motion timer expired",
+        "actor": "System"
+      },
+      {
+        "timestamp": "2026-05-22T18:06:00.000Z",
+        "event": "Responder Lisa Anderson dispatched",
+        "actor": "Admin"
+      },
+      {
+        "timestamp": "2026-05-22T18:20:00.000Z",
+        "event": "Responder arrived on scene",
+        "actor": "Lisa Anderson"
+      },
+      {
+        "timestamp": "2026-05-22T18:30:00.000Z",
+        "event": "User answered door - fell asleep after work",
+        "actor": "Lisa Anderson"
+      },
+      {
+        "timestamp": "2026-05-22T18:45:00.000Z",
+        "event": "All clear - incident marked as false alarm",
+        "actor": "Lisa Anderson"
+      }
+    ]
+  },
+  {
+    "id": "INC-2026-005",
+    "userId": "LW-US-7821",
+    "userName": "James Wilson",
+    "userAddress": "234 Victoria Road, Gladesville NSW 2111",
+    "status": "resolved",
+    "priority": "critical",
+    "triggeredAt": "2026-05-21T22:30:00.000Z",
+    "dispatchedAt": "2026-05-21T22:35:00.000Z",
+    "resolvedAt": "2026-05-22T01:30:00.000Z",
+    "responderId": "RESP-045",
+    "responderName": "James Mitchell",
+    "services": ["friend-alert"],
+    "notes": "User had medical emergency. Ambulance called, user transported to hospital. Nominated contact notified and attended hospital.",
+    "timeline": [
+      {
+        "timestamp": "2026-05-21T22:30:00.000Z",
+        "event": "Motion timer expired - 24hr interval",
+        "actor": "System"
+      },
+      {
+        "timestamp": "2026-05-21T22:35:00.000Z",
+        "event": "Nominated contact Peter Davis alerted - no response",
+        "actor": "System"
+      },
+      {
+        "timestamp": "2026-05-21T22:40:00.000Z",
+        "event": "Responder James Mitchell dispatched as backup",
+        "actor": "Admin"
+      },
+      {
+        "timestamp": "2026-05-21T23:05:00.000Z",
+        "event": "Responder on scene - user found unresponsive",
+        "actor": "James Mitchell"
+      },
+      {
+        "timestamp": "2026-05-21T23:06:00.000Z",
+        "event": "Ambulance called - medical emergency",
+        "actor": "James Mitchell"
+      },
+      {
+        "timestamp": "2026-05-21T23:25:00.000Z",
+        "event": "Paramedics arrived - user conscious and stable",
+        "actor": "James Mitchell"
+      },
+      {
+        "timestamp": "2026-05-21T23:45:00.000Z",
+        "event": "User transported to Royal North Shore Hospital",
+        "actor": "Paramedics"
+      },
+      {
+        "timestamp": "2026-05-22T00:15:00.000Z",
+        "event": "Nominated contact reached and notified - en route to hospital",
+        "actor": "Admin"
+      },
+      {
+        "timestamp": "2026-05-22T01:30:00.000Z",
+        "event": "User stable in hospital, family present - incident closed",
+        "actor": "Admin"
+      }
+    ]
+  }
+]

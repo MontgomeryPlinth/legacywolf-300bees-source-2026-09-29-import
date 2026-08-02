@@ -1,0 +1,19 @@
+{
+  "name": "legacy-wolf",
+  "private": true,
+  "packageManager": "pnpm@10.15.1",
+  "scripts": {
+    "build": "turbo build",
+    "dev:mobile": "pnpm --filter @legacy-wolf/mobile start",
+    "dev:web": "pnpm --filter @legacy-wolf/mobile web",
+    "lint": "turbo lint",
+    "test": "turbo test",
+    "typecheck": "turbo typecheck"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.0",
+    "prettier": "^3.5.3",
+    "turbo": "^2.5.0",
+    "typescript": "^5.8.3"
+  }
+}

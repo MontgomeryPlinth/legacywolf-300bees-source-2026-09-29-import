@@ -1,0 +1,101 @@
+[
+  {
+    "id": "CONT-001",
+    "userId": "LW-US-8472",
+    "name": "Sarah Chen",
+    "relationship": "Friend",
+    "phone": "+61 412 345 678",
+    "email": "sarah.chen@email.com",
+    "roles": ["Nominated Contact", "Pet Guardian"],
+    "instructions": "Sarah, you're my closest friend and you know Daisy well. If something happens to me, please make sure she's calm and gets to your place safely.",
+    "status": "verified"
+  },
+  {
+    "id": "CONT-002",
+    "userId": "LW-US-8472",
+    "name": "Marcus Wong",
+    "relationship": "Neighbor",
+    "phone": "+61 423 456 789",
+    "email": "marcus.w@email.com",
+    "roles": ["Backup Pet Guardian"],
+    "instructions": "Marcus lives in apartment 7C, just down the hall. He has a spare key.",
+    "status": "verified"
+  },
+  {
+    "id": "CONT-003",
+    "userId": "LW-US-8472",
+    "name": "Emma Sullivan",
+    "relationship": "Sister",
+    "phone": "+61 434 567 890",
+    "email": "emma.sullivan@email.com",
+    "roles": ["Estate Recipient"],
+    "instructions": "",
+    "status": "pending"
+  },
+  {
+    "id": "CONT-004",
+    "userId": "LW-US-8472",
+    "name": "David Morgan",
+    "relationship": "Father",
+    "phone": "+61 445 678 901",
+    "email": "david.morgan@email.com",
+    "roles": ["Nominated Contact"],
+    "instructions": "",
+    "status": "verified"
+  },
+  {
+    "id": "CONT-005",
+    "userId": "LW-US-2234",
+    "name": "Lisa Thompson",
+    "relationship": "Friend",
+    "phone": "+61 456 789 012",
+    "email": "lisa.t@email.com",
+    "roles": ["Nominated Contact", "Pet Guardian"],
+    "instructions": "Lisa has experience with cats and lives nearby.",
+    "status": "verified"
+  },
+  {
+    "id": "CONT-006",
+    "userId": "LW-US-2234",
+    "name": "Michael Brown",
+    "relationship": "Brother",
+    "phone": "+61 467 890 123",
+    "email": "michael.b@email.com",
+    "roles": ["Backup Pet Guardian", "Estate Recipient"],
+    "instructions": "",
+    "status": "verified"
+  },
+  {
+    "id": "CONT-007",
+    "userId": "LW-US-3456",
+    "name": "Rachel Kim",
+    "relationship": "Best Friend",
+    "phone": "+61 478 901 234",
+    "email": "rachel.kim@email.com",
+    "roles": ["Nominated Contact", "Pet Guardian"],
+    "instructions": "Rachel also has a French Bulldog and knows Luna's needs well.",
+    "status": "verified"
+  },
+  {
+    "id": "CONT-008",
+    "userId": "LW-US-5893",
+    "name": "Jessica Lee",
+    "relationship": "Partner",
+    "phone": "+61 489 012 345",
+    "email": "jessica.lee@email.com",
+    "roles": ["Nominated Contact", "Estate Recipient"],
+    "instructions": "",
+    "status": "verified"
+  },
+  {
+    "id": "CONT-009",
+    "userId": "LW-US-7821",
+    "name": "Peter Davis",
+    "relationship": "Friend",
+    "phone": "+61 490 123 456",
+    "email": "peter.d@email.com",
+    "roles": ["Nominated Contact"],
+    "instructions": "",
+    "status": "pending"
+  }
+]

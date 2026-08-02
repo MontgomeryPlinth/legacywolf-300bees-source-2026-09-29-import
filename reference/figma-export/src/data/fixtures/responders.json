@@ -1,0 +1,192 @@
+[
+  {
+    "id": "RESP-045",
+    "name": "James Mitchell",
+    "status": "dispatched",
+    "location": {
+      "lat": -33.8688,
+      "lng": 151.2093,
+      "address": "Pyrmont NSW"
+    },
+    "certifications": ["First Aid", "CPR", "Security License - 1A", "Pet First Aid"],
+    "rating": 4.9,
+    "totalIncidents": 127,
+    "currentIncidentId": "INC-2026-001",
+    "phone": "+61 412 789 456",
+    "email": "james.mitchell@legacywolf.com.au",
+    "joinedDate": "2024-03-15",
+    "lastActive": "2026-05-23T14:50:00.000Z",
+    "zone": "Sydney Inner West"
+  },
+  {
+    "id": "RESP-023",
+    "name": "Sarah Chen",
+    "status": "available",
+    "location": {
+      "lat": -33.8650,
+      "lng": 151.2094,
+      "address": "Sydney CBD"
+    },
+    "certifications": ["First Aid", "CPR", "Security License - 1A", "Pet First Aid", "Advanced First Aid"],
+    "rating": 4.8,
+    "totalIncidents": 98,
+    "currentIncidentId": null,
+    "phone": "+61 423 567 890",
+    "email": "sarah.chen@legacywolf.com.au",
+    "joinedDate": "2024-06-22",
+    "lastActive": "2026-05-23T15:13:00.000Z",
+    "zone": "Sydney CBD"
+  },
+  {
+    "id": "RESP-067",
+    "name": "Marcus Wong",
+    "status": "available",
+    "location": {
+      "lat": -33.8700,
+      "lng": 151.2000,
+      "address": "Ultimo NSW"
+    },
+    "certifications": ["First Aid", "Security License - 1A", "Defensive Driving"],
+    "rating": 4.7,
+    "totalIncidents": 84,
+    "currentIncidentId": null,
+    "phone": "+61 434 678 901",
+    "email": "marcus.wong@legacywolf.com.au",
+    "joinedDate": "2024-08-10",
+    "lastActive": "2026-05-23T15:07:00.000Z",
+    "zone": "Sydney Inner West"
+  },
+  {
+    "id": "RESP-012",
+    "name": "Lisa Anderson",
+    "status": "off-duty",
+    "location": {
+      "lat": -33.8900,
+      "lng": 151.1900,
+      "address": "Newtown NSW"
+    },
+    "certifications": ["First Aid", "CPR", "Security License - 1A", "Pet First Aid", "Crisis Intervention"],
+    "rating": 4.9,
+    "totalIncidents": 156,
+    "currentIncidentId": null,
+    "phone": "+61 445 789 012",
+    "email": "lisa.anderson@legacywolf.com.au",
+    "joinedDate": "2023-11-05",
+    "lastActive": "2026-05-23T07:00:00.000Z",
+    "zone": "Sydney Inner West"
+  },
+  {
+    "id": "RESP-089",
+    "name": "David Thompson",
+    "status": "on-call",
+    "location": {
+      "lat": -33.8750,
+      "lng": 151.2050,
+      "address": "Surry Hills NSW"
+    },
+    "certifications": ["First Aid", "CPR", "Security License - 1A"],
+    "rating": 4.6,
+    "totalIncidents": 72,
+    "currentIncidentId": null,
+    "phone": "+61 456 890 123",
+    "email": "david.thompson@legacywolf.com.au",
+    "joinedDate": "2024-09-18",
+    "lastActive": "2026-05-23T14:30:00.000Z",
+    "zone": "Sydney CBD"
+  },
+  {
+    "id": "RESP-034",
+    "name": "Rachel Kim",
+    "status": "available",
+    "location": {
+      "lat": -33.8600,
+      "lng": 151.2100,
+      "address": "Darlinghurst NSW"
+    },
+    "certifications": ["First Aid", "CPR", "Security License - 1A", "Pet First Aid", "Mental Health First Aid"],
+    "rating": 4.8,
+    "totalIncidents": 103,
+    "currentIncidentId": null,
+    "phone": "+61 467 901 234",
+    "email": "rachel.kim@legacywolf.com.au",
+    "joinedDate": "2024-04-28",
+    "lastActive": "2026-05-23T15:10:00.000Z",
+    "zone": "Sydney CBD"
+  },
+  {
+    "id": "RESP-056",
+    "name": "Tom Bradley",
+    "status": "on-call",
+    "location": {
+      "lat": -33.8850,
+      "lng": 151.2150,
+      "address": "Redfern NSW"
+    },
+    "certifications": ["First Aid", "CPR", "Security License - 1A", "Defensive Driving"],
+    "rating": 4.5,
+    "totalIncidents": 61,
+    "currentIncidentId": null,
+    "phone": "+61 478 012 345",
+    "email": "tom.bradley@legacywolf.com.au",
+    "joinedDate": "2025-01-12",
+    "lastActive": "2026-05-23T13:45:00.000Z",
+    "zone": "Sydney Inner West"
+  },
+  {
+    "id": "RESP-078",
+    "name": "Emma Walker",
+    "status": "available",
+    "location": {
+      "lat": -33.8550,
+      "lng": 151.2150,
+      "address": "Potts Point NSW"
+    },
+    "certifications": ["First Aid", "CPR", "Security License - 1A", "Pet First Aid"],
+    "rating": 4.7,
+    "totalIncidents": 89,
+    "currentIncidentId": null,
+    "phone": "+61 489 123 456",
+    "email": "emma.walker@legacywolf.com.au",
+    "joinedDate": "2024-07-03",
+    "lastActive": "2026-05-23T15:05:00.000Z",
+    "zone": "Sydney CBD"
+  },
+  {
+    "id": "RESP-091",
+    "name": "Michael Roberts",
+    "status": "off-duty",
+    "location": {
+      "lat": -33.8950,
+      "lng": 151.1850,
+      "address": "Stanmore NSW"
+    },
+    "certifications": ["First Aid", "Security License - 1A"],
+    "rating": 4.4,
+    "totalIncidents": 45,
+    "currentIncidentId": null,
+    "phone": "+61 490 234 567",
+    "email": "michael.roberts@legacywolf.com.au",
+    "joinedDate": "2025-02-20",
+    "lastActive": "2026-05-23T06:30:00.000Z",
+    "zone": "Sydney Inner West"
+  },
+  {
+    "id": "RESP-103",
+    "name": "Sophie Martinez",
+    "status": "available",
+    "location": {
+      "lat": -33.8620,
+      "lng": 151.2080,
+      "address": "Kings Cross NSW"
+    },
+    "certifications": ["First Aid", "CPR", "Security License - 1A", "Crisis Intervention", "Pet First Aid"],
+    "rating": 4.9,
+    "totalIncidents": 112,
+    "currentIncidentId": null,
+    "phone": "+61 401 345 678",
+    "email": "sophie.martinez@legacywolf.com.au",
+    "joinedDate": "2024-05-15",
+    "lastActive": "2026-05-23T15:12:00.000Z",
+    "zone": "Sydney CBD"
+  }
+]

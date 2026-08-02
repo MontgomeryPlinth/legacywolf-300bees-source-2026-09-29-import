@@ -1,0 +1,525 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum AccountRole {
+  user
+  nominated_contact
+  responder
+  admin
+}
+
+enum AccountStatus {
+  active
+  suspended
+  deletion_pending
+}
+
+enum PlanTier {
+  friend_alert
+  attend_check
+  attend_check_pet
+  full
+}
+
+enum PlanStatus {
+  setup
+  protected
+  paused
+  trip_mode
+  alert_active
+}
+
+enum TimerMode {
+  active
+  paused
+  trip
+  sick
+  drill
+}
+
+enum SignalType {
+  motion
+  checkin
+  app_open
+  dtmf
+  sms_reply
+}
+
+enum IncidentStatus {
+  grace
+  outreach
+  queue_executing
+  dispatched
+  on_scene
+  resolved
+  false_positive
+  deceased
+}
+
+enum IncidentTrigger {
+  timer_expiry
+  sick_mode
+  manual_help
+  drill
+  admin
+}
+
+model Account {
+  id              String             @id @default(uuid()) @db.Uuid
+  email           String?            @unique @db.Citext
+  phoneE164       String?            @unique @map("phone_e164")
+  emailVerified   Boolean            @default(false) @map("email_verified")
+  phoneVerified   Boolean            @default(false) @map("phone_verified")
+  legalName       String?            @map("legal_name")
+  preferredName   String?            @map("preferred_name")
+  dob             DateTime?          @db.Date
+  googleSub       String?            @unique @map("google_sub")
+  status          AccountStatus      @default(active)
+  roles           AccountRoleGrant[]
+  plan            Plan?
+  devices         Device[]
+  refreshTokens   RefreshToken[]
+  auditEvents     AuditLog[]
+  dispatches      Dispatch[]
+  incidentReports IncidentReport[]
+  authorizations  Authorization[]
+  legalDocuments  LegalDocument[]
+  subscription    Subscription?
+  decryptions     AccessDecryption[]
+  responderShifts ResponderShift[]
+  createdAt       DateTime           @default(now()) @map("created_at")
+  updatedAt       DateTime           @updatedAt @map("updated_at")
+
+  @@map("accounts")
+}
+
+model AccountRoleGrant {
+  accountId String      @map("account_id") @db.Uuid
+  role      AccountRole
+  account   Account     @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  grantedAt DateTime    @default(now()) @map("granted_at")
+
+  @@id([accountId, role])
+  @@map("account_roles")
+}
+
+model Device {
+  id             String         @id @default(uuid()) @db.Uuid
+  accountId      String         @map("account_id") @db.Uuid
+  account        Account        @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  platform       String
+  pushToken      String?        @map("push_token")
+  devicePubkey   String         @map("device_pubkey")
+  biometricBound Boolean        @default(false) @map("biometric_bound")
+  monitoringSource Boolean      @default(false) @map("monitoring_source")
+  lastSeenAt     DateTime?      @map("last_seen_at")
+  refreshTokens  RefreshToken[]
+  heartbeats     Heartbeat[]
+  createdAt      DateTime       @default(now()) @map("created_at")
+
+  @@map("devices")
+}
+
+model RefreshToken {
+  id        String    @id @default(uuid()) @db.Uuid
+  accountId String    @map("account_id") @db.Uuid
+  deviceId  String?   @map("device_id") @db.Uuid
+  account   Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  device    Device?   @relation(fields: [deviceId], references: [id], onDelete: Cascade)
+  tokenHash String    @map("token_hash")
+  familyId  String    @map("family_id") @db.Uuid
+  expiresAt DateTime  @map("expires_at")
+  revokedAt DateTime? @map("revoked_at")
+  createdAt DateTime  @default(now()) @map("created_at")
+
+  @@map("refresh_tokens")
+}
+
+model OtpChallenge {
+  id         String    @id @default(uuid()) @db.Uuid
+  identity   String
+  channel    String
+  codeHash   String    @map("code_hash")
+  attempts   Int       @default(0)
+  expiresAt  DateTime  @map("expires_at")
+  consumedAt DateTime? @map("consumed_at")
+  createdAt  DateTime  @default(now()) @map("created_at")
+
+  @@index([identity, expiresAt])
+  @@map("otp_challenges")
+}
+
+model Plan {
+  id              String              @id @default(uuid()) @db.Uuid
+  accountId       String              @unique @map("account_id") @db.Uuid
+  account         Account             @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  tier            PlanTier
+  status          PlanStatus          @default(setup)
+  healthScore     Int                 @default(0) @map("health_score")
+  timer           MotionTimer?
+  people          Person[]
+  pets            Pet[]
+  property        Property?
+  queue           ResponseQueueStep[]
+  incidents       Incident[]
+  letters         HandoffLetter[]
+  voiceMemos      VoiceMemo[]
+  reputationItems ReputationItem[]
+  createdAt       DateTime            @default(now()) @map("created_at")
+  updatedAt       DateTime            @updatedAt @map("updated_at")
+
+  @@map("plans")
+}
+
+model MotionTimer {
+  planId        String    @id @map("plan_id") @db.Uuid
+  plan          Plan      @relation(fields: [planId], references: [id], onDelete: Cascade)
+  intervalHours Int       @map("interval_hours")
+  graceMinutes  Int       @default(5) @map("grace_minutes")
+  lastSignalAt  DateTime  @default(now()) @map("last_signal_at")
+  nextExpiryAt  DateTime  @map("next_expiry_at")
+  mode          TimerMode @default(active)
+  modeUntil     DateTime? @map("mode_until")
+  modeReason    String?   @map("mode_reason")
+  batteryRuleEnabled Boolean @default(true) @map("battery_rule_enabled")
+  batteryBehaviour String @default("suppress") @map("battery_behaviour")
+  offlineEscalationHours Int @default(48) @map("offline_escalation_hours")
+  monitoringStrategy String @default("motion") @map("monitoring_strategy")
+  cancelEscalationOnMovement Boolean @default(true) @map("cancel_escalation_on_movement")
+
+  @@index([nextExpiryAt, mode])
+  @@map("motion_timers")
+}
+
+model Heartbeat {
+  id         BigInt     @id @default(autoincrement())
+  accountId  String     @map("account_id") @db.Uuid
+  deviceId   String     @map("device_id") @db.Uuid
+  device     Device     @relation(fields: [deviceId], references: [id])
+  signalType SignalType @map("signal_type")
+  recordedAt DateTime   @map("recorded_at")
+  receivedAt DateTime   @default(now()) @map("received_at")
+  nonce      String
+  signature  String
+
+  @@unique([deviceId, nonce])
+  @@index([accountId, receivedAt])
+  @@map("heartbeats")
+}
+
+model Person {
+  id              String              @id @default(uuid()) @db.Uuid
+  planId          String              @map("plan_id") @db.Uuid
+  plan            Plan                @relation(fields: [planId], references: [id], onDelete: Cascade)
+  linkedAccount   String?             @map("linked_account") @db.Uuid
+  name            String
+  relationship    String?
+  phoneE164       String?             @map("phone_e164")
+  email           String?             @db.Citext
+  roles           String[]            @default([])
+  escalationOrder Int?                @map("escalation_order")
+  instructions    String?
+  verification    String              @default("pending")
+  invitedAt       DateTime?           @map("invited_at")
+  verifiedAt      DateTime?           @map("verified_at")
+  queueTargets    ResponseQueueStep[]
+  primaryPets     Pet[]               @relation("primary_guardian")
+  backupPets      Pet[]               @relation("backup_guardian")
+
+  @@map("people")
+}
+
+model Pet {
+  id              String  @id @default(uuid()) @db.Uuid
+  planId          String  @map("plan_id") @db.Uuid
+  plan            Plan    @relation(fields: [planId], references: [id], onDelete: Cascade)
+  name            String
+  species         String?
+  breed           String?
+  ageYears        Int?    @map("age_years")
+  sex             String?
+  weightKg        Float?  @map("weight_kg")
+  microchipId     String? @map("microchip_id")
+  photoKey        String? @map("photo_key")
+  vetContact      Json?   @map("vet_contact")
+  medical         Json?
+  routine         Json?
+  preferences     Json?
+  emergencyFundCents Int? @map("emergency_fund_cents")
+  guardianPrimary String? @map("guardian_primary") @db.Uuid
+  guardianBackup  String? @map("guardian_backup") @db.Uuid
+  primary         Person? @relation("primary_guardian", fields: [guardianPrimary], references: [id])
+  backup          Person? @relation("backup_guardian", fields: [guardianBackup], references: [id])
+
+  @@map("pets")
+}
+
+model Property {
+  id            String         @id @default(uuid()) @db.Uuid
+  planId        String         @unique @map("plan_id") @db.Uuid
+  plan          Plan           @relation(fields: [planId], references: [id], onDelete: Cascade)
+  address       Json
+  propertyType  String?        @map("property_type")
+  unitDetails   String?        @map("unit_details")
+  accessDetails AccessDetail[]
+  accessMedia   PropertyAccessMedia[]
+
+  @@map("properties")
+}
+
+model PropertyAccessMedia {
+  id         String   @id @default(uuid()) @db.Uuid
+  propertyId String   @map("property_id") @db.Uuid
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  section    String
+  mediaType  String   @map("media_type")
+  dataUrl    String   @map("data_url")
+  label      String   @default("")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("property_access_media")
+}
+
+model AccessDetail {
+  id          String             @id @default(uuid()) @db.Uuid
+  propertyId  String             @map("property_id") @db.Uuid
+  property    Property           @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  fieldName   String             @map("field_name")
+  ciphertext  Bytes
+  iv          Bytes
+  authTag     Bytes              @map("auth_tag")
+  keyVersion  Int                @map("key_version")
+  updatedAt   DateTime           @updatedAt @map("updated_at")
+  decryptions AccessDecryption[]
+
+  @@unique([propertyId, fieldName])
+  @@map("access_details")
+}
+
+model ResponseQueueStep {
+  id              String              @id @default(uuid()) @db.Uuid
+  planId          String              @map("plan_id") @db.Uuid
+  plan            Plan                @relation(fields: [planId], references: [id], onDelete: Cascade)
+  position        Int
+  channel         String
+  targetPerson    String?             @map("target_person") @db.Uuid
+  person          Person?             @relation(fields: [targetPerson], references: [id])
+  waitMinutes     Int                 @default(5) @map("wait_minutes")
+  messageTemplate String?             @map("message_template")
+  attempts        EscalationAttempt[]
+
+  @@unique([planId, position])
+  @@map("response_queue_steps")
+}
+
+model Incident {
+  id          String              @id @default(uuid()) @db.Uuid
+  planId      String              @map("plan_id") @db.Uuid
+  plan        Plan                @relation(fields: [planId], references: [id])
+  trigger     IncidentTrigger
+  status      IncidentStatus      @default(grace)
+  openedAt    DateTime            @default(now()) @map("opened_at")
+  closedAt    DateTime?           @map("closed_at")
+  outcome     String?
+  attempts    EscalationAttempt[]
+  dispatches  Dispatch[]
+  report      IncidentReport?
+  decryptions AccessDecryption[]
+
+  @@index([status, openedAt])
+  @@map("incidents")
+}
+
+model AccessDecryption {
+  id             String       @id @default(uuid()) @db.Uuid
+  accessDetailId String       @map("access_detail_id") @db.Uuid
+  incidentId     String       @map("incident_id") @db.Uuid
+  actorId        String       @map("actor_id") @db.Uuid
+  reason         String
+  revealedAt     DateTime     @default(now()) @map("revealed_at")
+  expiresAt      DateTime     @map("expires_at")
+  accessDetail   AccessDetail @relation(fields: [accessDetailId], references: [id], onDelete: Restrict)
+  incident       Incident     @relation(fields: [incidentId], references: [id], onDelete: Restrict)
+  actor          Account      @relation(fields: [actorId], references: [id], onDelete: Restrict)
+
+  @@index([incidentId, revealedAt])
+  @@map("access_decryptions")
+}
+
+model ReputationItem {
+  id              String    @id @default(uuid()) @db.Uuid
+  planId          String    @map("plan_id") @db.Uuid
+  plan            Plan      @relation(fields: [planId], references: [id], onDelete: Cascade)
+  category        String
+  title           String
+  ciphertext      Bytes
+  iv              Bytes
+  authTag         Bytes     @map("auth_tag")
+  keyVersion      Int       @map("key_version")
+  deliveryTrigger String    @map("delivery_trigger")
+  releasedAt      DateTime? @map("released_at")
+  createdAt       DateTime  @default(now()) @map("created_at")
+
+  @@map("reputation_items")
+}
+
+model Dispatch {
+  id          String    @id @default(uuid()) @db.Uuid
+  incidentId  String    @map("incident_id") @db.Uuid
+  responderId String    @map("responder_id") @db.Uuid
+  status      String    @default("offered")
+  offeredAt   DateTime  @default(now()) @map("offered_at")
+  acceptedAt  DateTime? @map("accepted_at")
+  arrivedAt   DateTime? @map("arrived_at")
+  completedAt DateTime? @map("completed_at")
+  incident    Incident  @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  responder   Account   @relation(fields: [responderId], references: [id], onDelete: Restrict)
+
+  @@unique([incidentId, responderId])
+  @@index([responderId, status])
+  @@map("dispatches")
+}
+
+model ResponderShift {
+  id          String    @id @default(uuid()) @db.Uuid
+  responderId String    @map("responder_id") @db.Uuid
+  responder   Account   @relation(fields: [responderId], references: [id], onDelete: Cascade)
+  startedAt   DateTime  @default(now()) @map("started_at")
+  endedAt     DateTime? @map("ended_at")
+  lastLat     Decimal?  @map("last_lat") @db.Decimal(9, 6)
+  lastLng     Decimal?  @map("last_lng") @db.Decimal(9, 6)
+  lastSeenAt  DateTime  @default(now()) @map("last_seen_at")
+
+  @@index([responderId, endedAt])
+  @@map("responder_shifts")
+}
+
+model IncidentReport {
+  id          String   @id @default(uuid()) @db.Uuid
+  incidentId  String   @unique @map("incident_id") @db.Uuid
+  responderId String   @map("responder_id") @db.Uuid
+  outcome     String
+  notes       String?
+  actions     Json     @default("[]")
+  submittedAt DateTime @default(now()) @map("submitted_at")
+  incident    Incident @relation(fields: [incidentId], references: [id], onDelete: Cascade)
+  responder   Account  @relation(fields: [responderId], references: [id], onDelete: Restrict)
+
+  @@map("incident_reports")
+}
+
+model Authorization {
+  id         String    @id @default(uuid()) @db.Uuid
+  accountId  String    @map("account_id") @db.Uuid
+  kind       String
+  provider   String
+  externalId String?   @map("external_id")
+  status     String    @default("pending")
+  expiresAt  DateTime? @map("expires_at")
+  metadata   Json      @default("{}")
+  account    Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  createdAt  DateTime  @default(now()) @map("created_at")
+  updatedAt  DateTime  @updatedAt @map("updated_at")
+
+  @@index([accountId, kind, status])
+  @@map("authorizations")
+}
+
+model LegalDocument {
+  id         String   @id @default(uuid()) @db.Uuid
+  accountId  String   @map("account_id") @db.Uuid
+  account    Account  @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  name       String
+  category   String
+  notes      String?
+  mimeType   String   @map("mime_type")
+  ciphertext Bytes
+  iv         Bytes
+  authTag    Bytes    @map("auth_tag")
+  keyVersion Int      @map("key_version")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@map("legal_documents")
+}
+
+model Subscription {
+  id                   String    @id @default(uuid()) @db.Uuid
+  accountId            String    @unique @map("account_id") @db.Uuid
+  providerCustomerId   String?   @unique @map("provider_customer_id")
+  providerSubscription String?   @unique @map("provider_subscription")
+  status               String    @default("inactive")
+  tier                 PlanTier
+  currentPeriodEnd     DateTime? @map("current_period_end")
+  account              Account   @relation(fields: [accountId], references: [id], onDelete: Cascade)
+  createdAt            DateTime  @default(now()) @map("created_at")
+  updatedAt            DateTime  @updatedAt @map("updated_at")
+
+  @@map("subscriptions")
+}
+
+model EscalationAttempt {
+  id          String             @id @default(uuid()) @db.Uuid
+  incidentId  String             @map("incident_id") @db.Uuid
+  incident    Incident           @relation(fields: [incidentId], references: [id])
+  stepId      String?            @map("step_id") @db.Uuid
+  step        ResponseQueueStep? @relation(fields: [stepId], references: [id])
+  channel     String
+  target      String
+  providerSid String?            @map("provider_sid")
+  status      String             @default("queued")
+  response    String?
+  attemptedAt DateTime           @default(now()) @map("attempted_at")
+  updatedAt   DateTime           @updatedAt @map("updated_at")
+
+  @@map("escalation_attempts")
+}
+
+model HandoffLetter {
+  id              String    @id @default(uuid()) @db.Uuid
+  planId          String    @map("plan_id") @db.Uuid
+  plan            Plan      @relation(fields: [planId], references: [id], onDelete: Cascade)
+  recipient       String?   @db.Uuid
+  ciphertext      Bytes
+  iv              Bytes
+  authTag         Bytes     @map("auth_tag")
+  keyVersion      Int       @map("key_version")
+  deliveryTrigger String    @map("delivery_trigger")
+  releasedAt      DateTime? @map("released_at")
+
+  @@map("handoff_letters")
+}
+
+model VoiceMemo {
+  id              String    @id @default(uuid()) @db.Uuid
+  planId          String    @map("plan_id") @db.Uuid
+  plan            Plan      @relation(fields: [planId], references: [id], onDelete: Cascade)
+  recipient       String?   @db.Uuid
+  objectKey       String    @map("object_key")
+  deliveryTrigger String    @map("delivery_trigger")
+  releasedAt      DateTime? @map("released_at")
+
+  @@map("voice_memos")
+}
+
+model AuditLog {
+  id         BigInt   @id @default(autoincrement())
+  actorId    String?  @map("actor_id") @db.Uuid
+  actor      Account? @relation(fields: [actorId], references: [id])
+  actorRole  String?  @map("actor_role")
+  eventType  String   @map("event_type")
+  entityType String?  @map("entity_type")
+  entityId   String?  @map("entity_id") @db.Uuid
+  payload    Json     @default("{}")
+  prevHash   Bytes?   @map("prev_hash")
+  rowHash    Bytes    @map("row_hash")
+  createdAt  DateTime @default(now()) @map("created_at")
+
+  @@index([entityType, entityId])
+  @@map("audit_log")
+}

@@ -174,10 +174,10 @@ export default function LoginScreen() {
                 autoComplete="email"
                 keyboardType="email-address"
                 onChangeText={setIdentity}
-                onSubmitEditing={requestCode}
                 placeholder={
                   "you@example.com"
                 }
+                returnKeyType="done"
                 value={identity}
               />
             </View>}
@@ -196,7 +196,7 @@ export default function LoginScreen() {
               loading={loading}
               onPress={requestCode}
             >
-              Send code
+              Continue
             </Button>
           </>
         ) : (

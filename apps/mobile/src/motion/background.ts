@@ -1,12 +1,20 @@
 import * as TaskManager from "expo-task-manager";
 import * as BackgroundTask from "expo-background-task";
+import * as Application from "expo-application";
 import { flushHeartbeats } from "./heartbeat";
 import * as Location from "expo-location";
 import * as Notifications from "expo-notifications";
 import { enqueueHeartbeat } from "./heartbeat";
+import { Platform } from "react-native";
 export const HEARTBEAT_SYNC_TASK = "legacy-wolf-heartbeat-sync";
 export const SIGNIFICANT_LOCATION_TASK = "legacy-wolf-significant-location";
 export const SILENT_PUSH_TASK = "legacy-wolf-silent-push";
+
+async function isIosSimulator() {
+  if (Platform.OS !== "ios") return false;
+  return (await Application.getIosPushNotificationServiceEnvironmentAsync()) === null;
+}
+
 if (!TaskManager.isTaskDefined(HEARTBEAT_SYNC_TASK)) {
   TaskManager.defineTask(HEARTBEAT_SYNC_TASK, async () =>
     (await flushHeartbeats())
@@ -27,6 +35,7 @@ if (!TaskManager.isTaskDefined(SILENT_PUSH_TASK)) {
   });
 }
 export async function registerHeartbeatSync() {
+  if (await isIosSimulator()) return;
   const registered =
     await TaskManager.isTaskRegisteredAsync(HEARTBEAT_SYNC_TASK);
   if (!registered)
@@ -35,6 +44,7 @@ export async function registerHeartbeatSync() {
     });
 }
 export async function registerAuxiliaryWakeSignals() {
+  if (await isIosSimulator()) return;
   await Notifications.registerTaskAsync(SILENT_PUSH_TASK);
   const foreground = await Location.requestForegroundPermissionsAsync();
   if (!foreground.granted) return;

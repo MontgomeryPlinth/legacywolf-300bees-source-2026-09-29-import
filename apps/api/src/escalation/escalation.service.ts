@@ -11,6 +11,14 @@ type Work = {
   incidentId?: string;
   position?: number;
 };
+
+type ScheduledJobKind = "expiry" | "sick" | "offline";
+
+export function escalationJobId(kind: ScheduledJobKind, planId: string) {
+  // BullMQ reserves colons in custom job IDs.
+  return `${kind}-${planId}`;
+}
+
 @Injectable()
 export class EscalationService implements OnModuleDestroy {
   private queue?: Queue;
@@ -44,13 +52,14 @@ export class EscalationService implements OnModuleDestroy {
   }
   async scheduleExpiry(planId: string, expiry: Date) {
     if (!this.queue) return;
-    const old = await this.queue.getJob(`expiry:${planId}`);
+    const jobId = escalationJobId("expiry", planId);
+    const old = await this.queue.getJob(jobId);
     await old?.remove();
     await this.queue.add(
       "timer-expiry",
       { kind: "expire", planId },
       {
-        jobId: `expiry:${planId}`,
+        jobId,
         delay: Math.max(0, expiry.getTime() - Date.now()),
         removeOnComplete: true,
       },
@@ -58,15 +67,17 @@ export class EscalationService implements OnModuleDestroy {
   }
   async scheduleSick(planId: string) {
     if (!this.queue) return;
-    const old = await this.queue.getJob(`sick:${planId}`);
+    const jobId = escalationJobId("sick", planId);
+    const old = await this.queue.getJob(jobId);
     await old?.remove();
-    await this.queue.add("sick-expiry", { kind: "sick-expiry", planId }, { jobId: `sick:${planId}`, delay: 3 * 60_000, removeOnComplete: true });
+    await this.queue.add("sick-expiry", { kind: "sick-expiry", planId }, { jobId, delay: 3 * 60_000, removeOnComplete: true });
   }
   async scheduleOfflineDeadline(planId: string, accountId: string, lastSeenAt: Date, hours: number) {
     if (!this.queue) return;
-    const old = await this.queue.getJob(`offline:${planId}`);
+    const jobId = escalationJobId("offline", planId);
+    const old = await this.queue.getJob(jobId);
     await old?.remove();
-    await this.queue.add("offline-expiry", { kind: "offline-expiry", planId, accountId }, { jobId: `offline:${planId}`, delay: Math.max(0, lastSeenAt.getTime() + hours * 3_600_000 - Date.now()), removeOnComplete: true });
+    await this.queue.add("offline-expiry", { kind: "offline-expiry", planId, accountId }, { jobId, delay: Math.max(0, lastSeenAt.getTime() + hours * 3_600_000 - Date.now()), removeOnComplete: true });
   }
   async providerStatus(body: Record<string, string>) {
     const sid = body.MessageSid ?? body.CallSid;

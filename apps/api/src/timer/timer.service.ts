@@ -59,7 +59,19 @@ export class TimerService {
       where: { id: input.deviceId, accountId },
     });
     if (!device) throw new UnauthorizedException("Device is not registered.");
-    if (!device.monitoringSource) throw new UnauthorizedException("This is not the account’s nominated monitoring device.");
+    if (!device.monitoringSource) {
+      const nominated = await this.prisma.device.findFirst({
+        where: { accountId, monitoringSource: true },
+      });
+      if (nominated)
+        throw new UnauthorizedException(
+          "This is not the account’s nominated monitoring device.",
+        );
+      await this.prisma.device.update({
+        where: { id: device.id },
+        data: { monitoringSource: true },
+      });
+    }
     const message = Buffer.from(
       `${input.deviceId}.${input.recordedAt}.${input.signalType}.${input.nonce}`,
     );

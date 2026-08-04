@@ -1,20 +1,23 @@
-import { forwardRef, type PropsWithChildren, type ReactNode } from "react";
+import { forwardRef, useEffect, useRef, type PropsWithChildren, type ReactNode } from "react";
 import {
   ActivityIndicator,
   Modal as NativeModal,
   Pressable,
+  ScrollView,
   StyleSheet,
   Text,
   TextInput,
+  TouchableOpacity,
   View,
-  type PressableProps,
   type TextInputProps,
+  type TouchableOpacityProps,
   type ViewProps,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { colors, radii, spacing, typography } from "@legacy-wolf/tokens";
 
 export type ButtonVariant = "primary" | "secondary" | "critical" | "ghost";
-export interface ButtonProps extends Omit<PressableProps, "children"> {
+export interface ButtonProps extends Omit<TouchableOpacityProps, "children"> {
   children: ReactNode;
   variant?: ButtonVariant;
   loading?: boolean;
@@ -28,15 +31,15 @@ export function Button({
   ...props
 }: ButtonProps) {
   return (
-    <Pressable
+    <TouchableOpacity
+      activeOpacity={0.82}
       accessibilityRole="button"
       disabled={disabled || loading}
-      style={(state) => [
+      style={[
         styles.button,
         buttonStyles[variant],
-        state.pressed && pressedStyles[variant],
         (disabled || loading) && styles.disabled,
-        typeof style === "function" ? style(state) : style,
+        style,
       ]}
       {...props}
     >
@@ -54,7 +57,7 @@ export function Button({
           {children}
         </Text>
       )}
-    </Pressable>
+    </TouchableOpacity>
   );
 }
 
@@ -129,22 +132,39 @@ export function OtpInput({
   onChange(value: string): void;
   length?: number;
 }) {
+  const inputRef = useRef<TextInput>(null);
+
+  useEffect(() => {
+    const timeout = setTimeout(() => inputRef.current?.focus(), 250);
+    return () => clearTimeout(timeout);
+  }, []);
+
   return (
-    <View style={styles.otpRow}>
+    <Pressable
+      accessibilityRole="button"
+      onPress={() => inputRef.current?.focus()}
+      style={styles.otpRow}
+    >
       {Array.from({ length }, (_, index) => (
         <View key={index} style={styles.otpCell}>
           <Text style={styles.otpText}>{value[index] ?? ""}</Text>
         </View>
       ))}
       <TextInput
+        ref={inputRef}
         accessibilityLabel={`${length}-digit verification code`}
+        autoComplete="one-time-code"
+        caretHidden
+        inputMode="numeric"
         keyboardType="number-pad"
         maxLength={length}
         onChangeText={(next) => onChange(next.replace(/\D/g, ""))}
+        showSoftInputOnFocus
         style={styles.hiddenInput}
+        textContentType="oneTimeCode"
         value={value}
       />
-    </View>
+    </Pressable>
   );
 }
 
@@ -161,23 +181,35 @@ export function Modal({
       transparent
       visible={open}
     >
-      <View style={styles.modalBackdrop}>
-        <Card accessibilityViewIsModal style={styles.modalCard}>
-          <View style={styles.modalHeader}>
-            <Text accessibilityRole="header" style={styles.heading}>
-              {title}
-            </Text>
-            <Pressable
-              accessibilityLabel="Close"
-              accessibilityRole="button"
-              onPress={onClose}
+      <SafeAreaView style={styles.modalSafeArea}>
+        <View style={styles.modalBackdrop}>
+          <Card accessibilityViewIsModal style={styles.modalCard}>
+            <View style={styles.modalHeader}>
+              <Text accessibilityRole="header" style={styles.heading}>
+                {title}
+              </Text>
+              <Pressable
+                accessibilityLabel="Close"
+                accessibilityRole="button"
+                hitSlop={12}
+                onPress={onClose}
+              >
+                <Text style={styles.close}>×</Text>
+              </Pressable>
+            </View>
+            <ScrollView
+              contentContainerStyle={styles.modalContent}
+              keyboardDismissMode="interactive"
+              keyboardShouldPersistTaps="handled"
+              nestedScrollEnabled
+              showsVerticalScrollIndicator
+              style={styles.modalScroll}
             >
-              <Text style={styles.close}>×</Text>
-            </Pressable>
-          </View>
-          {children}
-        </Card>
-      </View>
+              {children}
+            </ScrollView>
+          </Card>
+        </View>
+      </SafeAreaView>
     </NativeModal>
   );
 }
@@ -191,12 +223,6 @@ const buttonStyles = StyleSheet.create({
   },
   critical: { backgroundColor: colors.ember },
   ghost: { backgroundColor: "transparent" },
-});
-const pressedStyles = StyleSheet.create({
-  primary: { backgroundColor: colors.deepMoss },
-  secondary: { backgroundColor: colors.onyx },
-  critical: { backgroundColor: colors.deepEmber },
-  ghost: { backgroundColor: colors.onyx },
 });
 const styles = StyleSheet.create({
   button: {
@@ -276,6 +302,10 @@ const styles = StyleSheet.create({
     right: 0,
     top: 0,
   },
+  modalSafeArea: {
+    backgroundColor: colors.obsidian,
+    flex: 1,
+  },
   modalBackdrop: {
     alignItems: "center",
     backgroundColor: colors.obsidian,
@@ -283,7 +313,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: spacing[4],
   },
-  modalCard: { maxWidth: 480, width: "100%" },
+  modalCard: {
+    flexShrink: 1,
+    maxHeight: "100%",
+    maxWidth: 480,
+    overflow: "hidden",
+    width: "100%",
+  },
+  modalContent: { flexGrow: 0, paddingBottom: spacing[2] },
+  modalScroll: { flexShrink: 1 },
   modalHeader: {
     alignItems: "center",
     flexDirection: "row",

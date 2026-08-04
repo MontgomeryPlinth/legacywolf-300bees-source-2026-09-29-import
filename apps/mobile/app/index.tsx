@@ -1,5 +1,6 @@
 import { router } from "expo-router";
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { Button } from "@legacy-wolf/ui";
 import { colors, radii, spacing, typography } from "@legacy-wolf/tokens";
 import { useState } from "react";
@@ -47,7 +48,7 @@ export default function EntryScreen() {
             <Button onPress={unlock}>Quick unlock</Button>
           ) : null}
           <Button onPress={() => router.push("/signup")}>
-            Sign up  →
+            Create account  →
           </Button>
           <Button onPress={() => router.push("/login")} variant="ghost">Already a member? Sign in</Button>
           {error ? (

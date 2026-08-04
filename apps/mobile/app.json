@@ -10,25 +10,44 @@
     "plugins": [
       "expo-router",
       "expo-secure-store",
-      ["expo-local-authentication", {
-        "faceIDPermission": "Legacy Wolf uses Face ID only to unlock your stored session on this device."
-      }],
-      "expo-background-task"
-      ,"./plugins/with-legacy-wolf-foreground-service"
-      ,"expo-notifications"
-      ,["expo-location", {
-        "locationAlwaysAndWhenInUsePermission": "Legacy Wolf uses occasional location changes only as an auxiliary wake signal for Motion Timer protection. Your location is not stored in your plan.",
-        "locationWhenInUsePermission": "Legacy Wolf uses occasional location changes only as an auxiliary wake signal for Motion Timer protection.",
-        "isIosBackgroundLocationEnabled": true,
-        "isAndroidBackgroundLocationEnabled": true,
-        "isAndroidForegroundServiceEnabled": true
-      }]
+      [
+        "expo-local-authentication",
+        {
+          "faceIDPermission": "Legacy Wolf uses Face ID only to unlock your stored session on this device."
+        }
+      ],
+      "expo-background-task",
+      "./plugins/with-legacy-wolf-foreground-service",
+      [
+        "expo-notifications",
+        {
+          "enableBackgroundRemoteNotifications": true
+        }
+      ],
+      [
+        "expo-location",
+        {
+          "locationAlwaysAndWhenInUsePermission": "Legacy Wolf uses occasional location changes only as an auxiliary wake signal for Motion Timer protection. Your location is not stored in your plan.",
+          "locationWhenInUsePermission": "Legacy Wolf uses occasional location changes only as an auxiliary wake signal for Motion Timer protection.",
+          "isIosBackgroundLocationEnabled": true,
+          "isAndroidBackgroundLocationEnabled": true,
+          "isAndroidForegroundServiceEnabled": true
+        }
+      ],
+      "expo-font",
+      "expo-localization",
+      "expo-status-bar",
+      "expo-web-browser",
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/icon-provisional.png",
+          "imageWidth": 200,
+          "resizeMode": "contain",
+          "backgroundColor": "#0A0A0A"
+        }
+      ]
     ],
-    "splash": {
-      "image": "./assets/icon-provisional.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#0A0A0A"
-    },
     "ios": {
       "supportsTablet": true,
       "bundleIdentifier": "com.legacywolf.app",

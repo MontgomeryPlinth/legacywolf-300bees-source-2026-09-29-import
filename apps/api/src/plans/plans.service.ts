@@ -1,6 +1,16 @@
 import { Injectable, NotFoundException } from "@nestjs/common";
 import { PrismaService } from "../prisma/prisma.service";
 import { AuditService } from "../audit/audit.service";
+
+export function calculatePlanHealthScore(input: {
+  hasPeopleAndQueue: boolean;
+  hasPropertyAccess: boolean;
+  hasPets: boolean;
+  hasWishes: boolean;
+}) {
+  return Object.values(input).filter(Boolean).length * 25;
+}
+
 @Injectable()
 export class PlansService {
   constructor(
@@ -10,10 +20,31 @@ export class PlansService {
   async getByAccount(accountId: string) {
     const plan = await this.prisma.plan.findUnique({
       where: { accountId },
-      include: { timer: true, queue: { orderBy: { position: "asc" } } },
+      include: {
+        timer: true,
+        queue: { orderBy: { position: "asc" } },
+        property: {
+          include: { _count: { select: { accessDetails: true } } },
+        },
+        _count: {
+          select: { letters: true, people: true, pets: true, voiceMemos: true },
+        },
+      },
     });
     if (!plan) throw new NotFoundException("Plan not found.");
-    return plan;
+    const healthScore = calculatePlanHealthScore({
+      hasPeopleAndQueue: plan._count.people > 0 && plan.queue.length > 0,
+      hasPropertyAccess: Boolean(plan.property?._count.accessDetails),
+      hasPets: plan._count.pets > 0,
+      hasWishes: plan._count.letters + plan._count.voiceMemos > 0,
+    });
+    if (healthScore !== plan.healthScore) {
+      await this.prisma.plan.update({
+        where: { id: plan.id },
+        data: { healthScore },
+      });
+    }
+    return { ...plan, healthScore };
   }
   async update(
     accountId: string,

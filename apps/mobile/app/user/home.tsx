@@ -1,6 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { Pressable, ScrollView, StyleSheet, Text, View } from "react-native";
 import { router } from "expo-router";
+import { Accelerometer } from "expo-sensors";
 import {
   Badge,
   Button,
@@ -14,6 +15,10 @@ import {
 import { colors, radii, spacing, typography } from "@legacy-wolf/tokens";
 import type { MotionTimer, Person, Plan, ResponseQueueStep } from "@legacy-wolf/core";
 import { useSession } from "../../src/auth/session";
+import {
+  enqueueHeartbeat,
+  subscribeToHeartbeats,
+} from "../../src/motion/heartbeat";
 import { AlertTriangle, BatteryFull, BatteryLow, BatteryWarning, Calendar, Check, Clock, Plane, Zap } from "lucide-react-native";
 
 type Dialog = "timer" | "queue" | "emergency" | "trip" | "sick" | "battery" | "drill" | null;
@@ -57,6 +62,9 @@ export default function HomeStatusScreen() {
   const [batteryEnabled, setBatteryEnabled] = useState(true);
   const [batteryBehaviour, setBatteryBehaviour] = useState<"suppress" | "respond" | "alert_contact">("suppress");
   const [offlineHoursText, setOfflineHoursText] = useState("48");
+  const [sensorAvailable, setSensorAvailable] = useState<boolean | null>(null);
+  const [lastMotionSignalAt, setLastMotionSignalAt] = useState<string | null>(null);
+  const [testingMotion, setTestingMotion] = useState(false);
 
   async function load() {
     const [nextTimer, nextPlan] = await Promise.all([
@@ -81,6 +89,21 @@ export default function HomeStatusScreen() {
     void load();
   }, [account]);
   useEffect(() => {
+    let active = true;
+    void Accelerometer.isAvailableAsync()
+      .then((available) => active && setSensorAvailable(available))
+      .catch(() => active && setSensorAvailable(false));
+    const unsubscribe = subscribeToHeartbeats((event) => {
+      if (event.signalType !== "motion") return;
+      setLastMotionSignalAt(event.recordedAt);
+      if (event.delivered) void client.timerApi.get().then(setTimer);
+    });
+    return () => {
+      active = false;
+      unsubscribe();
+    };
+  }, [client]);
+  useEffect(() => {
     if (!timer) return;
     const update = () =>
       setRemainingMs(
@@ -103,6 +126,28 @@ export default function HomeStatusScreen() {
     setTimer(await client.timerApi.checkIn());
     setNotice("Check-in recorded. Your Motion Timer has been reset.");
     setDialog(null);
+  }
+  async function testMotionReset() {
+    setTestingMotion(true);
+    try {
+      const delivered = await enqueueHeartbeat("motion");
+      const nextTimer = await client.timerApi.get();
+      setTimer(nextTimer);
+      setLastMotionSignalAt(nextTimer.last_signal_at);
+      setNotice(
+        delivered
+          ? "Test movement accepted. The server reset your Motion Timer."
+          : "Test movement was queued and will be delivered when the API is reachable.",
+      );
+    } catch (reason) {
+      setNotice(
+        reason instanceof Error
+          ? `Motion test failed: ${reason.message}`
+          : "Motion test failed.",
+      );
+    } finally {
+      setTestingMotion(false);
+    }
   }
   async function openQueue() {
     const [steps, people] = await Promise.all([client.responseQueue.list(), client.peopleApi.list()]);
@@ -256,6 +301,36 @@ export default function HomeStatusScreen() {
             ) : null}
           </Card>
         </Pressable>
+        <Card>
+          <View style={styles.row}>
+            <Text style={styles.cardTitle}>MOTION SENSOR</Text>
+            <Badge>
+              {sensorAvailable === null
+                ? "Checking"
+                : sensorAvailable
+                  ? "Listening"
+                  : "Unavailable"}
+            </Badge>
+          </View>
+          <Text style={styles.body}>
+            {sensorAvailable
+              ? "Accelerometer monitoring is active while iOS is delivering motion samples."
+              : "The iOS Simulator has no accelerometer. Use the development test below for the signed heartbeat path, and a physical iPhone for the hardware sensor."}
+          </Text>
+          <Text style={styles.sensorTimestamp}>
+            Last server signal: {new Date(timer.last_signal_at).toLocaleString()}
+          </Text>
+          {lastMotionSignalAt ? (
+            <Text style={styles.sensorTimestamp}>
+              Last motion event in this session: {new Date(lastMotionSignalAt).toLocaleString()}
+            </Text>
+          ) : null}
+          {__DEV__ ? (
+            <Button loading={testingMotion} onPress={testMotionReset} variant="secondary">
+              Test movement reset
+            </Button>
+          ) : null}
+        </Card>
         {!isActive ? (
           <Button onPress={resume}>Resume protection</Button>
         ) : timer.monitoring_strategy === "check_in" ? (
@@ -308,8 +383,8 @@ export default function HomeStatusScreen() {
           <Text style={styles.cardTitle}>PLAN READINESS</Text>
           <Progress value={plan.health_score} />
           <Text style={styles.body}>
-            {plan.health_score}% complete. Add people, property access, pets,
-            and wishes to finish your instruction.
+            {plan.health_score}% complete. People with a Response Queue,
+            property access, pets, and wishes each contribute 25%.
           </Text>
         </Card>
       </ScrollView>
@@ -657,6 +732,11 @@ const styles = StyleSheet.create({
   },
   notice: { borderColor: colors.guardianGreen, padding: spacing[3] },
   noticeText: { ...typography.bodySmall, color: colors.white },
+  sensorTimestamp: {
+    ...typography.bodySmall,
+    color: colors.white,
+    marginVertical: spacing[2],
+  },
   timerCard: { alignItems: "center", paddingVertical: spacing[8] },
   eyebrow: { ...typography.label, color: colors.mist },
   timer: {

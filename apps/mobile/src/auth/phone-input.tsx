@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useState } from "react";
-import { FlatList, Modal, Pressable, SafeAreaView, StyleSheet, Text, TextInput, View } from "react-native";
+import { FlatList, Modal, Pressable, StyleSheet, Text, TextInput, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { ChevronDown, Search, X } from "lucide-react-native";
 import { getLocales } from "expo-localization";
 import { getCountries, getCountryCallingCode, parsePhoneNumberFromString, type CountryCode } from "libphonenumber-js";

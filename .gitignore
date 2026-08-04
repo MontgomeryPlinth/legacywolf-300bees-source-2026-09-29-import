@@ -6,3 +6,6 @@ dist/
 coverage/
 .env
 **/.env
+
+# Generated locally by Expo prebuild; EAS regenerates it from app.json.
+/apps/mobile/ios

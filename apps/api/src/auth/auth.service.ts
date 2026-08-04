@@ -124,6 +124,16 @@ export class AuthService {
       update: isEmail ? { emailVerified: true } : { phoneVerified: true },
       include: { roles: true },
     });
+    if (input.device.platform !== "web") {
+      await this.prisma.device.updateMany({
+        where: {
+          accountId: account.id,
+          monitoringSource: true,
+          id: { not: input.device.id },
+        },
+        data: { monitoringSource: false },
+      });
+    }
     await this.prisma.$transaction([
       this.prisma.otpChallenge.update({
         where: { id: challenge.id },
@@ -136,10 +146,12 @@ export class AuthService {
           accountId: account.id,
           platform: input.device.platform,
           devicePubkey: input.device.publicKey,
+          monitoringSource: input.device.platform !== "web",
         },
         update: {
           lastSeenAt: new Date(),
           devicePubkey: input.device.publicKey,
+          monitoringSource: input.device.platform !== "web",
         },
       }),
     ]);
@@ -207,6 +219,16 @@ export class AuthService {
       update: { googleSub: payload.sub, emailVerified: true },
       include: { roles: true },
     });
+    if (input.device.platform !== "web") {
+      await this.prisma.device.updateMany({
+        where: {
+          accountId: account.id,
+          monitoringSource: true,
+          id: { not: input.device.id },
+        },
+        data: { monitoringSource: false },
+      });
+    }
     await this.prisma.device.upsert({
       where: { id: input.device.id },
       create: {
@@ -214,8 +236,13 @@ export class AuthService {
         accountId: account.id,
         platform: input.device.platform,
         devicePubkey: input.device.publicKey,
+        monitoringSource: input.device.platform !== "web",
       },
-      update: { lastSeenAt: new Date(), devicePubkey: input.device.publicKey },
+      update: {
+        lastSeenAt: new Date(),
+        devicePubkey: input.device.publicKey,
+        monitoringSource: input.device.platform !== "web",
+      },
     });
     await this.audit.append({
       actorId: account.id,

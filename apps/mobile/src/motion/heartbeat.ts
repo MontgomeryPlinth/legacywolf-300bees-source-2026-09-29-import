@@ -1,5 +1,14 @@
 import * as SecureStore from "../storage/secure";
+import * as Crypto from "expo-crypto";
 import * as Network from "expo-network";
+import {
+  base64,
+  fromBase64,
+  keyPairFromPrivateBytes,
+  keyPairFromSeed,
+  publicKeyPem,
+  signPayload,
+} from "./device-crypto";
 export type SignalType = "motion" | "checkin" | "app_open";
 export interface QueuedHeartbeat {
   deviceId: string;
@@ -8,10 +17,20 @@ export interface QueuedHeartbeat {
   nonce: string;
   signature: string;
 }
+export interface HeartbeatEvent {
+  delivered: boolean;
+  recordedAt: string;
+  signalType: SignalType;
+}
+const listeners = new Set<(event: HeartbeatEvent) => void>();
 const QUEUE_KEY = "legacy-wolf-heartbeats";
 const DEVICE_KEY = "legacy-wolf-device-id";
 const PRIVATE_KEY = "legacy-wolf-device-private-key";
 const PUBLIC_KEY = "legacy-wolf-device-public-key";
+export function subscribeToHeartbeats(listener: (event: HeartbeatEvent) => void) {
+  listeners.add(listener);
+  return () => listeners.delete(listener);
+}
 async function readQueue() {
   const raw = await SecureStore.getItemAsync(QUEUE_KEY);
   if (!raw) return [];
@@ -27,64 +46,33 @@ async function writeQueue(value: QueuedHeartbeat[]) {
 export async function deviceId() {
   const current = await SecureStore.getItemAsync(DEVICE_KEY);
   if (current) return current;
-  const value =
-    globalThis.crypto?.randomUUID?.() ??
-    `00000000-0000-4000-8000-${String(Date.now()).slice(-12)}`;
+  const value = Crypto.randomUUID();
   await SecureStore.setItemAsync(DEVICE_KEY, value);
   return value;
 }
-function base64(bytes: Uint8Array) {
-  let binary = "";
-  for (const byte of bytes) binary += String.fromCharCode(byte);
-  return globalThis.btoa(binary);
-}
-function fromBase64(value: string) {
-  const binary = globalThis.atob(value);
-  return Uint8Array.from(binary, (char) => char.charCodeAt(0));
-}
 async function keys() {
   const storedPrivate = await SecureStore.getItemAsync(PRIVATE_KEY);
-  const storedPublic = await SecureStore.getItemAsync(PUBLIC_KEY);
-  if (storedPrivate && storedPublic) {
-    const privateKey = await crypto.subtle.importKey(
-      "pkcs8",
-      fromBase64(storedPrivate),
-      { name: "Ed25519" },
-      false,
-      ["sign"],
-    );
-    return { privateKey, publicKeyPem: storedPublic };
+  if (storedPrivate) {
+    const pair = keyPairFromPrivateBytes(fromBase64(storedPrivate));
+    if (pair) {
+      const pem = publicKeyPem(pair.publicKey);
+      await SecureStore.setItemAsync(PUBLIC_KEY, pem);
+      return { secretKey: pair.secretKey, publicKeyPem: pem };
+    }
   }
-  const pair = await crypto.subtle.generateKey({ name: "Ed25519" }, true, [
-    "sign",
-    "verify",
-  ]);
-  const privateBytes = new Uint8Array(
-    await crypto.subtle.exportKey("pkcs8", pair.privateKey),
-  );
-  const publicBytes = new Uint8Array(
-    await crypto.subtle.exportKey("spki", pair.publicKey),
-  );
-  const encoded = base64(publicBytes);
-  const publicKeyPem = `-----BEGIN PUBLIC KEY-----\n${encoded.match(/.{1,64}/g)?.join("\n") ?? encoded}\n-----END PUBLIC KEY-----`;
-  await SecureStore.setItemAsync(PRIVATE_KEY, base64(privateBytes));
-  await SecureStore.setItemAsync(PUBLIC_KEY, publicKeyPem);
-  return { privateKey: pair.privateKey, publicKeyPem };
+
+  const pair = keyPairFromSeed(Crypto.getRandomBytes(32));
+  const pem = publicKeyPem(pair.publicKey);
+  await SecureStore.setItemAsync(PRIVATE_KEY, base64(pair.secretKey));
+  await SecureStore.setItemAsync(PUBLIC_KEY, pem);
+  return { secretKey: pair.secretKey, publicKeyPem: pem };
 }
 export async function devicePublicKey() {
   return (await keys()).publicKeyPem;
 }
 async function sign(payload: string) {
-  const { privateKey } = await keys();
-  return base64(
-    new Uint8Array(
-      await crypto.subtle.sign(
-        "Ed25519",
-        privateKey,
-        new TextEncoder().encode(payload),
-      ),
-    ),
-  );
+  const { secretKey } = await keys();
+  return signPayload(payload, secretKey);
 }
 export async function enqueueHeartbeat(signalType: SignalType) {
   const id = await deviceId();
@@ -99,7 +87,10 @@ export async function enqueueHeartbeat(signalType: SignalType) {
     signature: await sign(payload),
   };
   await writeQueue([...(await readQueue()), item]);
-  await flushHeartbeats();
+  const delivered = await flushHeartbeats();
+  const event = { delivered, recordedAt, signalType };
+  for (const listener of listeners) listener(event);
+  return delivered;
 }
 export async function flushHeartbeats() {
   const state = await Network.getNetworkStateAsync();

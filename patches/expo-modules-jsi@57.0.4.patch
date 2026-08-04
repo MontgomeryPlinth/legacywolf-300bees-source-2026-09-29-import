@@ -1,0 +1,12 @@
+diff --git a/apple/scripts/build-xcframework.sh b/apple/scripts/build-xcframework.sh
+index 56bcb4ced0c25da2aaa170e3d2657ae2e4798ca7..dfe7ffd99bd7bc645bbfbb6cf861961f40c5cd70 100755
+--- a/apple/scripts/build-xcframework.sh
++++ b/apple/scripts/build-xcframework.sh
+@@ -224,6 +224,7 @@ build_slice() {
+     -parallelizeTargets \
+     SYMROOT="${BUILD_PRODUCTS_PATH}" \
+     OBJROOT="${DERIVED_DATA_PATH}/Build/Intermediates.noindex" \
++    CODE_SIGNING_ALLOWED=NO \
+     BUILD_LIBRARY_FOR_DISTRIBUTION=YES \
+     SKIP_INSTALL=NO \
+     DEBUG_INFORMATION_FORMAT=dwarf-with-dsym \

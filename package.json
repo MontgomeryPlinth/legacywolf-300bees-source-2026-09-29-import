@@ -2,8 +2,34 @@
   "name": "legacy-wolf",
   "private": true,
   "packageManager": "pnpm@10.15.1",
+  "engines": {
+    "node": "22.x"
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "@nestjs/core",
+      "@prisma/client",
+      "@prisma/engines",
+      "esbuild",
+      "prisma"
+    ],
+    "ignoredBuiltDependencies": [
+      "@scarf/scarf",
+      "msgpackr-extract"
+    ],
+    "overrides": {
+      "brace-expansion@5.0.7": "5.0.9",
+      "postcss@8.5.16": "8.5.23",
+      "uuid@7.0.3": "11.1.1"
+    },
+    "patchedDependencies": {
+      "expo-modules-jsi@57.0.4": "patches/expo-modules-jsi@57.0.4.patch"
+    }
+  },
   "scripts": {
     "build": "turbo build",
+    "dev:android": "pnpm --filter @legacy-wolf/mobile android",
+    "dev:ios": "pnpm --filter @legacy-wolf/mobile ios",
     "dev:mobile": "pnpm --filter @legacy-wolf/mobile start",
     "dev:web": "pnpm --filter @legacy-wolf/mobile web",
     "lint": "turbo lint",

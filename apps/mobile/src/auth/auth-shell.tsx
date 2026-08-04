@@ -1,12 +1,12 @@
 import { useEffect, useRef, type PropsWithChildren, type ReactNode } from "react";
 import {
   Pressable,
-  SafeAreaView,
   ScrollView,
   StyleSheet,
   Text,
   View,
 } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import { router } from "expo-router";
 import { colors, radii, spacing, typography } from "@legacy-wolf/tokens";
 
@@ -45,7 +45,9 @@ export function AuthShell({
       {headerAccessory}
       <ScrollView
         ref={scrollRef}
+        automaticallyAdjustKeyboardInsets
         contentContainerStyle={styles.content}
+        keyboardDismissMode="interactive"
         keyboardShouldPersistTaps="handled"
       >
         {children}
